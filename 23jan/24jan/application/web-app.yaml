@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   name: webapp-deployment
 spec:
+  minReadySeconds: 180
   replicas: 1
   selector:
     matchLabels:
@@ -19,21 +20,22 @@ spec:
         ports:
           - containerPort: 3000
         env:
-          - name: MONGO_INITDB_ROOT_USERNAME
+          - name: USER_NAME
             valueFrom: 
               secretKeyRef:
                 name: mongosecr 
-                key: username
-          - name: MONGO_INITDB_ROOT_PASSWORD
+                key: mongo-user
+          - name: USER_PWD
             valueFrom: 
               secretKeyRef:
                 name: mongosecr 
-                key: password  
+                key: mongo-password  
           - name: DB-URL 
             valueFrom:
               configMapKeyRef:
                  name: mongo-config    
                  key: mongo-url
+      
 ---
 apiVersion: v1
 kind: Service
