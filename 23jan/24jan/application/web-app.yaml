@@ -20,15 +20,20 @@ spec:
           - containerPort: 3000
         env:
           - name: MONGO_INITDB_ROOT_USERNAME
-            value: mongoadmin
+            valueFrom: 
+              secretKeyRef:
+                name: mongosecr 
+                key: username
           - name: MONGO_INITDB_ROOT_PASSWORD
-            value: mongo    
-          - name: DB_URL 
+            valueFrom: 
+              secretKeyRef:
+                name: mongosecr 
+                key: password  
+          - name: DB-URL 
             valueFrom:
               configMapKeyRef:
-                 key: db-url
-                 name: mangoconf    
-        
+                 name: mongo-config    
+                 key: mongo-url
 ---
 apiVersion: v1
 kind: Service
